@@ -1,0 +1,11 @@
+name: Merge Branch
+on:
+  push:
+    branches: [ main ]
+jobs:
+  this_is_job_name:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: step_name
+        run: echo "hello world"
