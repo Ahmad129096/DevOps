@@ -2,12 +2,13 @@
 
 import { useState } from "react";
 import ContactForm from "./Components/ContactForm";
+import ContactUsForm from "./Components/ContactUsForm";
 import UploadFile from "./Components/UploadFile";
 
 export default function Home() {
-  const [activeService, setActiveService] = useState<"bucket" | "lambda">(
-    "bucket",
-  );
+  const [activeService, setActiveService] = useState<
+    "bucket" | "lambda" | "dynamodb"
+  >("bucket");
 
   return (
     <main className="flex flex-1 items-center justify-center bg-zinc-50 p-6 dark:bg-black">
@@ -47,6 +48,21 @@ export default function Home() {
           >
             AWS Lambda
           </button>
+          <button
+            id="dynamodb-tab"
+            className={`flex-1 px-4 py-3 text-sm font-medium ${
+              activeService === "dynamodb"
+                ? "border-b-2 border-blue-600 text-blue-700 dark:text-blue-400"
+                : "text-zinc-600 hover:bg-zinc-50 dark:text-zinc-400 dark:hover:bg-zinc-900"
+            }`}
+            type="button"
+            role="tab"
+            aria-selected={activeService === "dynamodb"}
+            aria-controls="dynamodb-panel"
+            onClick={() => setActiveService("dynamodb")}
+          >
+            AWS DynamoDB
+          </button>
         </div>
 
         {activeService === "bucket" ? (
@@ -58,16 +74,25 @@ export default function Home() {
           >
             <UploadFile />
           </div>
-        ) : (
+        ) : activeService === "lambda" ? (
           <div
             id="lambda-panel"
             className="p-6"
             role="tabpanel"
             aria-labelledby="lambda-tab"
           >
-              <ContactForm />
-            </div>
-          )}
+            <ContactForm />
+          </div>
+        ) : (
+          <div
+            id="dynamodb-panel"
+            className="p-6"
+            role="tabpanel"
+            aria-labelledby="dynamodb-tab"
+          >
+            <ContactUsForm />
+          </div>
+        )}
       </section>
     </main>
   );
